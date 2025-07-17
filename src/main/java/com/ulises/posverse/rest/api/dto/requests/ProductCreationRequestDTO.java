@@ -14,7 +14,7 @@ import javax.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-17T23:57:38.201939200+02:00[Europe/Madrid]", comments = "Generator version: 7.4.0")
 @Data
 public class ProductCreationRequestDTO {
-  @NotEmpty(message = "Name can't be empty")
+  @NotEmpty(message = "name can't be empty")
   @Schema(name = "name", example = "Coke", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("name")
   private String name;

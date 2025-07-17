@@ -1,6 +1,7 @@
 package com.ulises.posverse.exceptions.handlers;
 
 import lombok.val;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,7 +19,7 @@ public class GlobalExceptionHandler {
         val errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .toList();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errors", errors));
