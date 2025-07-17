@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProductsServiceImpl implements ProductsService {
     @Override
-    public Product createProduct(final Product product) {
+    public Product saveProduct(final Product product) {
         return null;
     }
 }
