@@ -5,6 +5,7 @@
  */
 package com.ulises.posverse.rest.api;
 
+import com.ulises.posverse.domain.model.Product;
 import com.ulises.posverse.rest.api.dto.requests.ProductCreationRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -43,7 +44,7 @@ public interface ProductsApi {
             consumes = { "application/json" }
     )
 
-    ResponseEntity<Void> createProduct(
+    ResponseEntity<Product> createProduct(
             @Parameter(name = "ProductCreationRequestDTO", description = "Product creation request", required = true)
             @Valid @RequestBody final ProductCreationRequestDTO productCreationRequestDTO
     );

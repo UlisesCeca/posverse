@@ -1,6 +1,7 @@
 package com.ulises.posverse.rest.api.impl;
 
 import com.ulises.posverse.common.mappers.ProductMapper;
+import com.ulises.posverse.domain.model.Product;
 import com.ulises.posverse.domain.services.ProductsService;
 import com.ulises.posverse.rest.api.ProductsApi;
 import com.ulises.posverse.rest.api.dto.requests.ProductCreationRequestDTO;
@@ -16,11 +17,10 @@ public class ProductsApiImpl implements ProductsApi {
     private final ProductMapper productMapper;
 
     @Override
-    public ResponseEntity<Void> createProduct(final ProductCreationRequestDTO productCreationRequestDTO) {
+    public ResponseEntity<Product> createProduct(final ProductCreationRequestDTO productCreationRequestDTO) {
         val product = this.productMapper.toModel(productCreationRequestDTO);
+        val savedProduct = this.productsService.saveProduct(product);
 
-        this.productsService.saveProduct(product);
-
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(savedProduct);
     }
 }
