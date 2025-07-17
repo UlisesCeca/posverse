@@ -1,0 +1,33 @@
+openapi: 3.0.1
+info:
+  title: API de ejemplo
+  version: 1.0.0
+paths:
+  /products:
+    post:
+      summary: Creates a product
+      operationId: createProduct
+      responses:
+        '201':
+          description: Created
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/ProductCreationRequestDTO'
+      requestBody:
+        required: true
+        description: "Product creation request"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCreationRequestDTO'
+components:
+  schemas:
+    ProductCreationRequestDTO:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: "Coke"
