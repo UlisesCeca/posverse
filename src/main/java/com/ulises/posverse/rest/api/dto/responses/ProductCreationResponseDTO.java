@@ -14,6 +14,6 @@ import lombok.EqualsAndHashCode;
 public class ProductCreationResponseDTO extends ProductBase {
   @Schema(name = "id", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("id")
-  private BigDecimal id;
+  private Long id;
 }
 

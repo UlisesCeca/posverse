@@ -11,8 +11,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class CategoryCreationResponseDTO extends CategoryBase {
   @NotNull(message = "ID can't be null")
-  @Schema(name = "name", example = "Drinks", description = "name of the category", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("name")
+  @Schema(name = "id", example = "Drinks", description = "name of the category", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("id")
   private Long id;
 }
 
