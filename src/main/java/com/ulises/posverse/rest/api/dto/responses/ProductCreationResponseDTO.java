@@ -2,24 +2,18 @@ package com.ulises.posverse.rest.api.dto.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
+
+import com.ulises.posverse.common.objects.ProductBase;
 import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.annotation.Generated;
-
-/**
- * ProductCreationResponseDTO
- */
-
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-18T01:48:09.427530900+02:00[Europe/Madrid]", comments = "Generator version: 7.4.0")
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class ProductCreationResponseDTO {
+public class ProductCreationResponseDTO extends ProductBase {
   @Schema(name = "id", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("id")
   private BigDecimal id;
-
-  @Schema(name = "name", example = "Coke", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("name")
-  private String name;
 }
 

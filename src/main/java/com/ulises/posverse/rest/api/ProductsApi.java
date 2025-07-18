@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,19 +21,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-17T23:45:41.592781600+02:00[Europe/Madrid]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen",
+        date = "2025-07-18T10:50:11.431661200+02:00[Europe/Madrid]", comments = "Generator version: 7.4.0")
 @Validated
 @Tag(name = "products", description = "the products API")
 public interface ProductsApi {
 
+    /**
+     * POST /products : Creates a product
+     *
+     * @param productCreationRequestDTO Product creation request (required)
+     * @return Created (status code 201)
+     */
     @Operation(
             operationId = "createProduct",
             summary = "Creates a product",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Created", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ProductCreationResponseDTO.class))
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ProductCreationResponseDTO.class))
                     })
             }
     )
@@ -44,8 +52,8 @@ public interface ProductsApi {
     )
 
     ResponseEntity<ProductCreationResponseDTO> createProduct(
-            @Parameter(name = "ProductCreationRequestDTO", description = "Product creation request", required = true)
-            @Valid @RequestBody final ProductCreationRequestDTO productCreationRequestDTO
+            @Parameter(name = "ProductCreationRequestDTO", description = "Product creation request",
+                    required = true) @Valid @RequestBody final ProductCreationRequestDTO productCreationRequestDTO
     );
 
 }

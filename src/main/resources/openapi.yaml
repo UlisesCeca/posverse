@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: "3.0.1"
 info:
   title: API de ejemplo
   version: 1.0.0
@@ -7,13 +7,6 @@ paths:
     post:
       summary: Creates a product
       operationId: createProduct
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProductCreationResponseDTO'
       requestBody:
         required: true
         description: "Product creation request"
@@ -21,54 +14,39 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ProductCreationRequestDTO'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCreationResponseDTO'
 components:
   schemas:
-    ProductCreationRequestDTO:
+    ProductBase:
       type: object
       required:
         - name
       properties:
-        name:
-          type: string
-          description: "The name of the product"
-          example: "Coke"
-        salePrice:
-          type: number
-          description: "The sale price"
-          example: 2.50
-        purchasePrice:
-          type: number
-          description: "The purchase price"
-          example: 0.70
-        description:
-          type: string
-          description: "The description of the product"
-          example: "Refreshing drink"
-        compositeProduct:
-          type: boolean
-          description: "If the product is composed by one or more different products"
-          example: true
-        availableForSale:
-          type: boolean
-          description: "If the product is available for sale or not"
-          example: true
-        trackInventory:
-          type: boolean
-          description: "If the product should track the inventory such as the stock"
-        stockAmount:
-          type: number
-          description: "The available amount of stock of the product"
-          example: 102
-        lowStockWarning:
-          type: number
-          description: "The amount at which the user should be warned when the stock amount is equal or lower to"
-          example: 24
+        name: { type: string, example: "Coke" }
+        salePrice: { type: number, format: double, example: 2.50 }
+        purchasePrice: { type: number, format: double, example: 0.70 }
+        description: { type: string, example: "Refreshing drink" }
+        isCompositeProduct: { type: boolean, example: true }
+        isAvailableForSale: { type: boolean, example: true }
+        mustTrackStock: { type: boolean }
+        stockAmount: { type: number, format: double, example: 102 }
+        lowStockWarning: { type: number, format: double, example: 24 }
+
+    ProductCreationRequestDTO:
+      allOf:
+        - $ref: '#/components/schemas/ProductBase'
+
     ProductCreationResponseDTO:
-      type: object
-      properties:
-        id:
-          type: number
-          example: 1
-        name:
-          type: string
-          example: "Coke"
+      allOf:
+        - $ref: '#/components/schemas/ProductBase'
+        - type: object
+          required:
+            - id
+          properties:
+            id: { type: integer, format: int64, example: 1}
