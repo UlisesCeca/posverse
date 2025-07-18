@@ -21,6 +21,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProductCreationResponseDTO'
+  /categories:
+    post:
+      summary: Creates a category
+      operationId: createCategory
+      requestBody:
+        required: true
+        description: "Category creation request"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryCreationRequestDTO'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryCreationResponseDTO'
 components:
   schemas:
     ProductBase:
@@ -66,14 +84,37 @@ components:
       allOf:
         - $ref: '#/components/schemas/ProductBase'
         - type: object
-          required:
-            - id
           properties:
             id:
               type: integer
               format: int64
               example: 1
               description: "The ID of the created product"
+
+    CategoryBase:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: "Drinks"
+          description: "name of the category"
+
+    CategoryCreationRequestDTO:
+      allOf:
+        - $ref: '#/components/schemas/CategoryBase'
+
+    CategoryCreationResponseDTO:
+      allOf:
+        - $ref: '#/components/schemas/CategoryBase'
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: "The unique identifier of the category"
+              example: 1
 
     StockTracking:
       type: object
