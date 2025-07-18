@@ -6,7 +6,7 @@
 package com.ulises.posverse.rest.api;
 
 import com.ulises.posverse.rest.api.dto.product.create.requests.ProductCreationRequestDTO;
-import com.ulises.posverse.rest.api.dto.responses.ProductCreationResponseDTO;
+import com.ulises.posverse.rest.api.dto.product.create.responses.ProductCreationResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

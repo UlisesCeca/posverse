@@ -5,7 +5,7 @@ import com.ulises.posverse.domain.model.Product;
 import com.ulises.posverse.domain.services.ProductsService;
 import com.ulises.posverse.rest.api.ProductsApi;
 import com.ulises.posverse.rest.api.dto.product.create.requests.ProductCreationRequestDTO;
-import com.ulises.posverse.rest.api.dto.responses.ProductCreationResponseDTO;
+import com.ulises.posverse.rest.api.dto.product.create.responses.ProductCreationResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.ResponseEntity;

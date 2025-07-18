@@ -5,8 +5,8 @@
  */
 package com.ulises.posverse.rest.api;
 
-import com.ulises.posverse.rest.api.dto.requests.CategoryCreationRequestDTO;
-import com.ulises.posverse.rest.api.dto.responses.CategoryCreationResponseDTO;
+import com.ulises.posverse.rest.api.dto.category.create.requests.CategoryCreationRequestDTO;
+import com.ulises.posverse.rest.api.dto.category.create.responses.CategoryCreationResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

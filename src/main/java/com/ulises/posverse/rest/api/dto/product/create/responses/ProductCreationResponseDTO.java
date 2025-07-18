@@ -1,12 +1,12 @@
-package com.ulises.posverse.common.pojo;
+package com.ulises.posverse.rest.api.dto.product.create.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ulises.posverse.common.pojo.StockTrackingBase;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -18,13 +18,16 @@ import java.math.BigDecimal;
         date = "2025-07-17T23:57:38.201939200+02:00[Europe/Madrid]", comments = "Generator version: 7.4.0")
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProductBase implements Serializable {
+public class ProductCreationResponseDTO implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
 
-  @NotEmpty(message = "name can't be empty")
-  @Schema(name = "name", example = "Coke", description = "The name of the product", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "id", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("id")
+  private Long id;
+
+  @Schema(name = "name", example = "Coke", description = "The name of the product", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("name")
   private String name;
 
@@ -58,7 +61,7 @@ public class ProductBase implements Serializable {
 
   @Valid
   @NotNull(message = "stockTracking can't be null")
-  @Schema(name = "stockTracking", requiredMode = Schema.RequiredMode.REQUIRED,
+  @Schema(name = "stockTracking", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
           description = "Information related to the stock")
   @JsonProperty("stockTracking")
   private StockTrackingBase stockTracking;
@@ -67,6 +70,5 @@ public class ProductBase implements Serializable {
   @Schema(name = "category", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
           description = "Category associated to the product")
   @JsonProperty("category")
-  private CategoryBase category;
+  private CategoryProductCreationResponseDTO category;
 }
-
