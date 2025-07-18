@@ -5,10 +5,12 @@
  */
 package com.ulises.posverse.rest.api;
 
-import com.ulises.posverse.domain.model.Product;
 import com.ulises.posverse.rest.api.dto.requests.ProductCreationRequestDTO;
+import com.ulises.posverse.rest.api.dto.responses.ProductCreationResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -25,26 +27,23 @@ import javax.annotation.Generated;
 @Tag(name = "products", description = "the products API")
 public interface ProductsApi {
 
-    /**
-     * POST /products : Creates a product
-     *
-     * @param productCreationRequestDTO  (required)
-     * @return Created (status code 201)
-     */
     @Operation(
             operationId = "createProduct",
             summary = "Creates a product",
             responses = {
-                    @ApiResponse(responseCode = "201", description = "Created")
+                    @ApiResponse(responseCode = "201", description = "Created", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ProductCreationResponseDTO.class))
+                    })
             }
     )
     @RequestMapping(
             method = RequestMethod.POST,
             value = "/products",
+            produces = { "application/json" },
             consumes = { "application/json" }
     )
 
-    ResponseEntity<Product> createProduct(
+    ResponseEntity<ProductCreationResponseDTO> createProduct(
             @Parameter(name = "ProductCreationRequestDTO", description = "Product creation request", required = true)
             @Valid @RequestBody final ProductCreationRequestDTO productCreationRequestDTO
     );
