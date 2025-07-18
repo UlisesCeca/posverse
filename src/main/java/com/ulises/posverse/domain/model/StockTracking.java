@@ -1,6 +1,6 @@
 package com.ulises.posverse.domain.model;
 
-import com.ulises.posverse.common.objects.StockTrackingBase;
+import com.ulises.posverse.common.pojo.StockTrackingBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

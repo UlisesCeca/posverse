@@ -1,9 +1,8 @@
 package com.ulises.posverse.rest.api.dto.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.math.BigDecimal;
 
-import com.ulises.posverse.common.objects.ProductBase;
+import com.ulises.posverse.common.pojo.ProductBase;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import lombok.Data;

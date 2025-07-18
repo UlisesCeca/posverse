@@ -16,7 +16,7 @@ public class ProductsServiceImpl implements ProductsService {
     private final ProductsRepository productsRepository;
     private final ProductMapper productMapper;
     @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     @Override
     public Product saveProduct(final Product product) {

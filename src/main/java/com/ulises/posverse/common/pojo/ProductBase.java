@@ -1,4 +1,4 @@
-package com.ulises.posverse.common.objects;
+package com.ulises.posverse.common.pojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

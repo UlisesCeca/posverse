@@ -1,13 +1,19 @@
 package com.ulises.posverse.domain.model;
 
-import com.ulises.posverse.common.objects.ProductBase;
+import com.ulises.posverse.common.pojo.StockTrackingBase;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
+import java.math.BigDecimal;
+
 @Data
-public class Product extends ProductBase {
+public class Product  {
     private Long id;
-    private StockTracking stockTracking;
+    private String name;
+    private BigDecimal salePrice;
+    private BigDecimal purchasePrice;
+    private String description;
+    private Boolean isCompositeProduct;
+    private Boolean isAvailableForSale;
+    private StockTrackingBase stockTracking;
     private Category category;
 }

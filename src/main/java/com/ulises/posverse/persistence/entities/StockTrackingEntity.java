@@ -1,6 +1,6 @@
 package com.ulises.posverse.persistence.entities;
 
-import com.ulises.posverse.common.objects.StockTrackingBase;
+import com.ulises.posverse.common.pojo.StockTrackingBase;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

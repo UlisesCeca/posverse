@@ -4,7 +4,7 @@ import com.ulises.posverse.common.mappers.ProductMapper;
 import com.ulises.posverse.domain.model.Product;
 import com.ulises.posverse.domain.services.ProductsService;
 import com.ulises.posverse.rest.api.ProductsApi;
-import com.ulises.posverse.rest.api.dto.requests.ProductCreationRequestDTO;
+import com.ulises.posverse.rest.api.dto.product.create.requests.ProductCreationRequestDTO;
 import com.ulises.posverse.rest.api.dto.responses.ProductCreationResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.val;

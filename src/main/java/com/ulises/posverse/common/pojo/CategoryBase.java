@@ -1,4 +1,4 @@
-package com.ulises.posverse.common.objects;
+package com.ulises.posverse.common.pojo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ulises.posverse.common.contraintsgroups.OnCreateCategory;
