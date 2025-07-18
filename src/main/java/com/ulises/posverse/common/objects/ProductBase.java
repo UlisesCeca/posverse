@@ -62,5 +62,11 @@ public class ProductBase implements Serializable {
           description = "Information related to the stock")
   @JsonProperty("stockTracking")
   private StockTrackingBase stockTracking;
+
+  @Valid
+  @Schema(name = "category", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+          description = "Category associated to the product")
+  @JsonProperty("category")
+  private CategoryBase category;
 }
 

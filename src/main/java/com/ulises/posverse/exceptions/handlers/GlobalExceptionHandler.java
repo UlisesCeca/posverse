@@ -1,6 +1,8 @@
 package com.ulises.posverse.exceptions.handlers;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -19,7 +21,7 @@ import java.util.Map;
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
-    private final JdbcTemplate jdbcTemplate; // Lo inyecta Spring automáticamente
+    private final JdbcTemplate jdbcTemplate;
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, List<String>>> handleValidationException(final MethodArgumentNotValidException ex) {
@@ -27,6 +29,16 @@ public class GlobalExceptionHandler {
                 .getFieldErrors()
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .toList();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errors", errors));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, List<String>>> handleConstraintViolationException(final ConstraintViolationException ex) {
+        val errors = ex.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
                 .toList();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errors", errors));

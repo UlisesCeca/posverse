@@ -6,6 +6,4 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class Category extends CategoryBase {
-    private Long id;
-}
+public class Category extends CategoryBase {}

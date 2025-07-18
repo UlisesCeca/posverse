@@ -16,6 +16,9 @@ public interface ProductMapper {
     Product toModel(final ProductCreationRequestDTO dto);
 
     @InheritConfiguration(name = "toBase")
+    Product toModel(final ProductEntity entity);
+
+    @InheritConfiguration(name = "toBase")
     ProductEntity toEntity(final Product dto);
 
     @InheritConfiguration(name = "toBase")

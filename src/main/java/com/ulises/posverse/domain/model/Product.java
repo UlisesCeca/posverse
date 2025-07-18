@@ -9,4 +9,5 @@ import lombok.EqualsAndHashCode;
 public class Product extends ProductBase {
     private Long id;
     private StockTracking stockTracking;
+    private Category category;
 }

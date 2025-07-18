@@ -48,7 +48,6 @@ public interface CategoriesApi {
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    
     ResponseEntity<CategoryCreationResponseDTO> createCategory(
         @Parameter(name = "CategoryCreationRequestDTO", description = "Category creation request", required = true)
         @Valid @RequestBody final CategoryCreationRequestDTO categoryCreationRequestDTO

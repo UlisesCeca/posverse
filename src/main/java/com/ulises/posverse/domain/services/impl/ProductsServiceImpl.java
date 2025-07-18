@@ -5,6 +5,8 @@ import com.ulises.posverse.domain.model.Product;
 import com.ulises.posverse.domain.services.ProductsService;
 import com.ulises.posverse.persistence.entities.ProductEntity;
 import com.ulises.posverse.persistence.repositories.ProductsRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +15,18 @@ import org.springframework.stereotype.Service;
 public class ProductsServiceImpl implements ProductsService {
     private final ProductsRepository productsRepository;
     private final ProductMapper productMapper;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public Product saveProduct(final Product product) {
-        final ProductEntity productEntity = this.productMapper.toEntity(product);
+        final ProductEntity productToSave = this.productMapper.toEntity(product);
+        final ProductEntity savedProductEntity;
 
-        this.productsRepository.save(productEntity);
-        product.setId(productEntity.getId());
+        this.productsRepository.save(productToSave);
+        this.entityManager.clear();
+        savedProductEntity = this.productsRepository.findById(productToSave.getId()).orElse(null);
 
-        return product;
+        return this.productMapper.toModel(savedProductEntity);
     }
 }

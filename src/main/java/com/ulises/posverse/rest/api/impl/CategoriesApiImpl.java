@@ -1,5 +1,6 @@
 package com.ulises.posverse.rest.api.impl;
 
+import com.ulises.posverse.common.contraintsgroups.OnCreateCategory;
 import com.ulises.posverse.common.mappers.CategoryMapper;
 import com.ulises.posverse.domain.model.Category;
 import com.ulises.posverse.domain.services.CategoriesService;
@@ -9,6 +10,7 @@ import com.ulises.posverse.rest.api.dto.responses.CategoryCreationResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
@@ -20,6 +22,7 @@ public class CategoriesApiImpl implements CategoriesApi {
     private final CategoryMapper categoryMapper;
 
     @Override
+    @Validated(OnCreateCategory.class)
     public ResponseEntity<CategoryCreationResponseDTO> createCategory(final CategoryCreationRequestDTO categoryCreationRequestDTO) {
         final Category categoryToSave = this.categoryMapper.toModel(categoryCreationRequestDTO);
         final Category savedCategory = this.categoriesService.saveCategory(categoryToSave);

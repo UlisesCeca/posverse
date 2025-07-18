@@ -16,4 +16,3 @@ public class ProductCreationResponseDTO extends ProductBase {
   @JsonProperty("id")
   private Long id;
 }
-
