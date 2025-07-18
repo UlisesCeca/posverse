@@ -28,15 +28,35 @@ components:
       required:
         - name
       properties:
-        name: { type: string, example: "Coke" }
-        salePrice: { type: number, format: double, example: 2.50 }
-        purchasePrice: { type: number, format: double, example: 0.70 }
-        description: { type: string, example: "Refreshing drink" }
-        isCompositeProduct: { type: boolean, example: true }
-        isAvailableForSale: { type: boolean, example: true }
-        mustTrackStock: { type: boolean }
-        stockAmount: { type: number, format: double, example: 102 }
-        lowStockWarning: { type: number, format: double, example: 24 }
+        name:
+          type: string
+          example: "Coke"
+          description: "The name of the product"
+        salePrice:
+          type: number
+          format: double
+          example: 2.50
+          description: "The sale price"
+        purchasePrice:
+          type: number
+          format: double
+          example: 0.70
+          description: "The purchase price"
+        description:
+          type: string
+          example: "Refreshing drink"
+          description: "The description of the product"
+        isCompositeProduct:
+          type: boolean
+          example: true
+          description: "If the product is composed by one or more different products"
+        isAvailableForSale:
+          type: boolean
+          example: true
+          description: "If the product is available for sale or not"
+        stockTracking:
+          $ref: '#/components/schemas/StockTracking'
+          description: "Information related to the stock"
 
     ProductCreationRequestDTO:
       allOf:
@@ -49,4 +69,26 @@ components:
           required:
             - id
           properties:
-            id: { type: integer, format: int64, example: 1}
+            id:
+              type: integer
+              format: int64
+              example: 1
+              description: "The ID of the created product"
+
+    StockTracking:
+      type: object
+      properties:
+        mustTrackStock:
+          type: boolean
+          example: true
+          description: "If the product should track the inventory such as the stock"
+        stockAmount:
+          type: number
+          format: double
+          example: 102
+          description: "The available amount of stock of the product"
+        lowStockWarning:
+          type: number
+          format: double
+          example: 24
+          description: "The amount at which the user should be warned when the stock amount is equal or lower to"

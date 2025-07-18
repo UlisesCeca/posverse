@@ -8,4 +8,5 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Product extends ProductBase {
     private Long id;
+    private StockTracking stockTracking;
 }

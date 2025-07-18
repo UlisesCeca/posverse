@@ -1,6 +1,7 @@
 package com.ulises.posverse.persistence.entities;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,12 +39,6 @@ public class ProductEntity {
     @Column(name = "IS_AVAILABLE_FOR_SALE")
     private Boolean isAvailableForSale;
 
-    @Column(name = "MUST_TRACK_STOCK")
-    private Boolean mustTrackStock;
-
-    @Column(name = "STOCK_AMOUNT")
-    private BigDecimal stockAmount;
-
-    @Column(name = "LOW_STOCK_WARNING")
-    private BigDecimal lowStockWarning;
+    @Embedded
+    private StockTrackingEntity stockTracking;
 }
