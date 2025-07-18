@@ -24,7 +24,7 @@ public class CategoriesApiImpl implements CategoriesApi {
         final Category categoryToSave = this.categoryMapper.toModel(categoryCreationRequestDTO);
         final Category savedCategory = this.categoriesService.saveCategory(categoryToSave);
         final CategoryCreationResponseDTO response = this.categoryMapper.toDto(savedCategory);
-        val uri = URI.create("/products/" + savedCategory.getId());
+        val uri = URI.create("/categories/" + savedCategory.getId());
 
         return ResponseEntity
                 .created(uri)
