@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .toList();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errors", errors));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", errors));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
                 .map(ConstraintViolation::getMessage)
                 .toList();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errors", errors));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", errors));
     }
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)

@@ -1,12 +1,14 @@
 package com.ulises.posverse.persistence.entities;
 
-import com.ulises.posverse.common.pojo.StockTrackingBase;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
+import java.math.BigDecimal;
+
 @Embeddable
 @Data
-public class StockTrackingEntity extends StockTrackingBase {
+public class StockTrackingEntity {
+    private Boolean mustTrackStock;
+    private BigDecimal stockAmount;
+    private BigDecimal lowStockWarning;
 }

@@ -1,6 +1,6 @@
 package com.ulises.posverse.domain.model;
 
-import com.ulises.posverse.common.pojo.StockTrackingBase;
+import com.ulises.posverse.rest.api.dto.product.StockTrackingDTO;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -14,6 +14,6 @@ public class Product  {
     private String description;
     private Boolean isCompositeProduct;
     private Boolean isAvailableForSale;
-    private StockTrackingBase stockTracking;
+    private StockTrackingDTO stockTracking;
     private Category category;
 }

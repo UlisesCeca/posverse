@@ -1,10 +1,12 @@
 package com.ulises.posverse.domain.model;
 
-import com.ulises.posverse.common.pojo.StockTrackingBase;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
+import java.math.BigDecimal;
+
 @Data
-public class StockTracking extends StockTrackingBase {
+public class StockTracking  {
+    private Boolean mustTrackStock;
+    private BigDecimal stockAmount;
+    private BigDecimal lowStockWarning;
 }

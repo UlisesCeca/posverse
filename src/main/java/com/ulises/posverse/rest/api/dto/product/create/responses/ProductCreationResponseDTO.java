@@ -2,7 +2,7 @@ package com.ulises.posverse.rest.api.dto.product.create.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ulises.posverse.common.pojo.StockTrackingBase;
+import com.ulises.posverse.rest.api.dto.product.StockTrackingDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
@@ -64,7 +64,7 @@ public class ProductCreationResponseDTO implements Serializable {
   @Schema(name = "stockTracking", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
           description = "Information related to the stock")
   @JsonProperty("stockTracking")
-  private StockTrackingBase stockTracking;
+  private StockTrackingDTO stockTracking;
 
   @Valid
   @Schema(name = "category", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
