@@ -49,10 +49,10 @@ public class GlobalExceptionHandler {
             SQLIntegrityConstraintViolationException ex,
             HttpServletRequest request) {
 
-        val detail = ex.getMessage(); // e.g. Duplicate entry 'Drinks3' for key 'categories.UK_abc123'
-        val duplicatedValue = extractDuplicatedValue(detail); // e.g. Drinks3
-        val constraint = extractConstraintName(detail); // e.g. UK_abc123
-        val table = extractTableName(detail); // e.g. categories
+        val detail = ex.getMessage();
+        val duplicatedValue = extractDuplicatedValue(detail);
+        val constraint = extractConstraintName(detail);
+        val table = extractTableName(detail);
         var field = "unknown";
 
         if (constraint != null && table != null) {
@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
         }
 
         val error = new HashMap<String, Object>();
-        error.put("error", String.format("Value '%s' already exists", duplicatedValue));
+        error.put("error", List.of(String.format("Value '%s' already exists", duplicatedValue)));
         error.put("duplicatedField", field);
         error.put("duplicatedValue", duplicatedValue);
         error.put("status", HttpStatus.CONFLICT.value());
@@ -83,38 +83,25 @@ public class GlobalExceptionHandler {
 
     private String extractDuplicatedValue(String message) {
         val start = message.indexOf("Duplicate entry '");
-        if (start == -1) {
-            return null;
-        }
+        if (start == -1) return null;
         val firstQuote = message.indexOf("'", start);
         val secondQuote = message.indexOf("'", firstQuote + 1);
-        if (firstQuote != -1 && secondQuote != -1) {
-            return message.substring(firstQuote + 1, secondQuote);
-        }
-        return null;
+        return (firstQuote != -1 && secondQuote != -1)
+                ? message.substring(firstQuote + 1, secondQuote)
+                : null;
     }
 
     private String extractConstraintName(String message) {
         val keyIndex = message.indexOf("for key");
-        if (keyIndex == -1) {
-            return null;
-        }
+        if (keyIndex == -1) return null;
         val key = message.substring(keyIndex).replace("for key", "").replaceAll("[`']", "").trim();
-        if (key.contains(".")) {
-            return key.substring(key.indexOf('.') + 1);
-        }
-        return key;
+        return key.contains(".") ? key.substring(key.indexOf('.') + 1) : key;
     }
 
     private String extractTableName(String message) {
         val keyIndex = message.indexOf("for key");
-        if (keyIndex == -1) {
-            return null;
-        }
+        if (keyIndex == -1) return null;
         val key = message.substring(keyIndex).replace("for key", "").replaceAll("[`']", "").trim();
-        if (key.contains(".")) {
-            return key.substring(0, key.indexOf('.'));
-        }
-        return null;
+        return key.contains(".") ? key.substring(0, key.indexOf('.')) : null;
     }
 }

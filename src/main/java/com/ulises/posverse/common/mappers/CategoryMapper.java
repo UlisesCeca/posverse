@@ -17,4 +17,5 @@ public interface CategoryMapper {
 
     CategoryProductCreationResponseDTO map(Category value);
 
+    Category toModel(final CategoryEntity categoryEntity);
 }
