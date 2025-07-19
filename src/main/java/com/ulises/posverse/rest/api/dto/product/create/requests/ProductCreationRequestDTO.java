@@ -62,7 +62,6 @@ public class ProductCreationRequestDTO implements Serializable {
     @JsonProperty("stockTracking")
     private StockTrackingBase stockTracking;
 
-    @Valid
     @Schema(name = "category", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             description = "Category associated to the product")
     @JsonProperty("category")

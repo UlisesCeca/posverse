@@ -3,7 +3,6 @@ package com.ulises.posverse.rest.api.dto.product.create.requests;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serial;
@@ -17,8 +16,7 @@ public class CategoryProductCreationRequestDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @NotNull(message = "ID can't be null")
-    @Schema(name = "id", example = "2", description = "ID of the category", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(name = "id", example = "2", description = "ID of the category", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("id")
     private Long id;
 }
