@@ -6,6 +6,7 @@ import com.ulises.posverse.domain.model.Product;
 import com.ulises.posverse.domain.services.CategoriesService;
 import com.ulises.posverse.domain.services.ProductsService;
 import com.ulises.posverse.exceptions.CategoryNotFoundException;
+import com.ulises.posverse.exceptions.ProductNotFoundException;
 import com.ulises.posverse.persistence.entities.ProductEntity;
 import com.ulises.posverse.persistence.repositories.ProductsRepository;
 import jakarta.persistence.EntityManager;
@@ -35,6 +36,15 @@ public class ProductsServiceImpl implements ProductsService {
         savedProductEntity = this.productsRepository.findById(productToSave.getId()).orElse(null);
 
         return this.productMapper.toModel(savedProductEntity);
+    }
+
+    @Override
+    public Product findProductById(@NonNull final Long id) {
+        final ProductEntity productEntity = this.productsRepository
+                .findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
+
+        return this.productMapper.toModel(productEntity);
     }
 
     private void assertProductFieldsExist(@NonNull final Product product) {

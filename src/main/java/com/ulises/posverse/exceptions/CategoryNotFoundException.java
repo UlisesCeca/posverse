@@ -5,7 +5,7 @@ public class CategoryNotFoundException extends RuntimeException {
         super("Category with ID " + id + " not found.");
     }
 
-    public CategoryNotFoundException(String message) {
+    public CategoryNotFoundException(final String message) {
         super(message);
     }
 }

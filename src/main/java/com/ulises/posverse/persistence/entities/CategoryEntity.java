@@ -5,8 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Table(name = "CATEGORIES")
@@ -18,4 +21,7 @@ public class CategoryEntity {
 
     @Column(name = "NAME", nullable = false, unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "category")
+    private List<ProductEntity> products;
 }

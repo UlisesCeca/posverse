@@ -6,9 +6,11 @@ import com.ulises.posverse.domain.services.ProductsService;
 import com.ulises.posverse.rest.api.ProductsApi;
 import com.ulises.posverse.rest.api.dto.product.create.requests.ProductCreationRequestDTO;
 import com.ulises.posverse.rest.api.dto.product.create.responses.ProductCreationResponseDTO;
+import com.ulises.posverse.rest.api.dto.product.create.responses.ProductRetrievalResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
@@ -23,11 +25,19 @@ public class ProductsApiImpl implements ProductsApi {
     public ResponseEntity<ProductCreationResponseDTO> createProduct(final ProductCreationRequestDTO productCreationRequestDTO) {
         final Product productToSave = this.productMapper.toModel(productCreationRequestDTO);
         final Product savedProduct = this.productsService.saveProduct(productToSave);
-        final ProductCreationResponseDTO response = this.productMapper.toDto(savedProduct);
+        final ProductCreationResponseDTO response = this.productMapper.toCategoryProductCreationDto(savedProduct);
         val uri = URI.create("/products/" + savedProduct.getId());
 
         return ResponseEntity
                 .created(uri)
                 .body(response);
+    }
+
+    @Override
+    public ResponseEntity<ProductRetrievalResponseDTO> getProductById(@PathVariable final Long productId) {
+        final Product requestedProduct = this.productsService.findProductById(productId);
+        final ProductRetrievalResponseDTO response = this.productMapper.toProductRetrievalDto(requestedProduct);
+
+        return ResponseEntity.ok(response);
     }
 }

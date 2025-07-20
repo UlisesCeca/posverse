@@ -6,6 +6,7 @@ import com.ulises.posverse.persistence.entities.ProductEntity;
 import com.ulises.posverse.rest.api.dto.product.create.requests.ProductCreationRequestDTO;
 import com.ulises.posverse.rest.api.dto.product.create.responses.CategoryProductCreationResponseDTO;
 import com.ulises.posverse.rest.api.dto.product.create.responses.ProductCreationResponseDTO;
+import com.ulises.posverse.rest.api.dto.product.create.responses.ProductRetrievalResponseDTO;
 import org.mapstruct.BeforeMapping;
 import org.mapstruct.Mapper;
 
@@ -17,9 +18,11 @@ public interface ProductMapper {
 
     ProductEntity toEntity(final Product dto);
 
-    ProductCreationResponseDTO toDto(final Product dto);
+    ProductCreationResponseDTO toCategoryProductCreationDto(final Product dto);
 
-    CategoryProductCreationResponseDTO toDto(final Category model);
+    CategoryProductCreationResponseDTO toCategoryProductCreationDto(final Category model);
+
+    ProductRetrievalResponseDTO toProductRetrievalDto(final Product model);
 
     @BeforeMapping
     default void setStockValues(final ProductCreationRequestDTO dto) {
