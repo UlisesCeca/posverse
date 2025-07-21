@@ -2,12 +2,33 @@ package com.ulises.posverse.common.enums;
 
 import org.springframework.data.domain.Sort;
 
-public enum SortDirection {
-    ASC, DESC;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-    public Sort apply(final String sortBy) {
-        return this == ASC
-                ? Sort.by(sortBy).ascending()
-                : Sort.by(sortBy).descending();
+public enum SortDirection {
+    ASC(Sort.Order::asc),
+    DESC(Sort.Order::desc);
+
+    private final Function<String, Sort.Order> orderCreator;
+
+    SortDirection(Function<String, Sort.Order> orderCreator) {
+        this.orderCreator = orderCreator;
+    }
+
+    public Sort apply(List<String> sortByFields) {
+        if (sortByFields == null || sortByFields.isEmpty()) {
+            return Sort.unsorted();
+        }
+
+        List<Sort.Order> orders = sortByFields.stream()
+                .map(orderCreator)
+                .collect(Collectors.toList());
+
+        return Sort.by(orders);
+    }
+
+    public Sort apply(String sortBy) {
+        return apply(List.of(sortBy));
     }
 }
