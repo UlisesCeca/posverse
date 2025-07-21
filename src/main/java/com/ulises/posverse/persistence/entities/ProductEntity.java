@@ -11,6 +11,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
@@ -46,5 +48,7 @@ public class ProductEntity {
 
     @ManyToOne
     @JoinColumn(name = "ID_CATEGORY")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private CategoryEntity category;
 }

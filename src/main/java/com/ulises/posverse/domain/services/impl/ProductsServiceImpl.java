@@ -9,10 +9,15 @@ import com.ulises.posverse.exceptions.CategoryNotFoundException;
 import com.ulises.posverse.exceptions.ProductNotFoundException;
 import com.ulises.posverse.persistence.entities.ProductEntity;
 import com.ulises.posverse.persistence.repositories.ProductsRepository;
+import com.ulises.posverse.rest.api.dto.product.params.PagedProductsRetrievalRequestParam;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -45,6 +50,14 @@ public class ProductsServiceImpl implements ProductsService {
                 .orElseThrow(() -> new ProductNotFoundException(id));
 
         return this.productMapper.toModel(productEntity);
+    }
+
+    @Override
+    public Page<Product> getPagedProductsList(final PagedProductsRetrievalRequestParam requestParams) {
+        final Sort sort = requestParams.getDirection().apply(requestParams.getSortBy());
+        val pageable = PageRequest.of(requestParams.getPage() - 1, requestParams.getSize(), sort);
+
+        return this.productsRepository.findAll(pageable).map(productMapper::toModel);
     }
 
     private void assertProductFieldsExist(@NonNull final Product product) {

@@ -6,8 +6,10 @@
 package com.ulises.posverse.rest.api;
 
 import com.ulises.posverse.rest.api.dto.product.create.requests.ProductCreationRequestDTO;
+import com.ulises.posverse.rest.api.dto.product.create.responses.PagedProductsRetrievalResponseDTO;
 import com.ulises.posverse.rest.api.dto.product.create.responses.ProductCreationResponseDTO;
 import com.ulises.posverse.rest.api.dto.product.create.responses.ProductRetrievalResponseDTO;
+import com.ulises.posverse.rest.api.dto.product.params.PagedProductsRetrievalRequestParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,6 +20,7 @@ import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,7 +65,7 @@ public interface ProductsApi {
      * GET /products/{id} : Retrieves a product by id
      *
      * @param productId Product ID (required)
-     * @return Created (status code 200)
+     * @return OK (status code 200)
      */
     @Operation(
             operationId = "getProductById",
@@ -70,7 +73,7 @@ public interface ProductsApi {
             responses = {
                     @ApiResponse(responseCode = "200", description = "OK", content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ProductCreationResponseDTO.class))
+                                    schema = @Schema(implementation = ProductRetrievalResponseDTO.class))
                     })
             }
     )
@@ -83,6 +86,33 @@ public interface ProductsApi {
     ResponseEntity<ProductRetrievalResponseDTO> getProductById(
             @Parameter(name = "productId", description = "Retrieves a product by id",
                     required = true) @PathVariable final Long productId
+    );
+
+    /**
+     * GET /products : Retrieves a product by id
+     *
+     * @param requestParams request params
+     * @return OK (status code 200)
+     */
+    @Operation(
+            operationId = "getPagedProductsList",
+            summary = "Retrieves paged list of products",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK", content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = PagedProductsRetrievalResponseDTO.class))
+                    })
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/products",
+            produces = { "application/json" }
+    )
+
+    ResponseEntity<PagedProductsRetrievalResponseDTO> getPagedProductsList(
+            @Parameter(name = "requestParams", description = "The parameters to perform the paged request")
+                @ModelAttribute final PagedProductsRetrievalRequestParam requestParams
     );
 
 }
