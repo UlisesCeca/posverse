@@ -21,7 +21,7 @@ public enum SortDirection {
             return Sort.unsorted();
         }
 
-        List<Sort.Order> orders = sortByFields.stream()
+        final List<Sort.Order> orders = sortByFields.stream()
                 .map(orderCreator)
                 .collect(Collectors.toList());
 
