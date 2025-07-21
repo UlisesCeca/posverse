@@ -16,7 +16,8 @@ public enum SortDirection {
         this.orderCreator = orderCreator;
     }
 
-    public Sort apply(List<String> sortByFields) {
+    public Sort apply(final List<String> sortByFields) {
+        
         if (sortByFields == null || sortByFields.isEmpty()) {
             return Sort.unsorted();
         }
