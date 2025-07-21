@@ -17,7 +17,6 @@ public enum SortDirection {
     }
 
     public Sort apply(final List<String> sortByFields) {
-        
         if (sortByFields == null || sortByFields.isEmpty()) {
             return Sort.unsorted();
         }
@@ -29,7 +28,7 @@ public enum SortDirection {
         return Sort.by(orders);
     }
 
-    public Sort apply(String sortBy) {
+    public Sort apply(final String sortBy) {
         return apply(List.of(sortBy));
     }
 }
