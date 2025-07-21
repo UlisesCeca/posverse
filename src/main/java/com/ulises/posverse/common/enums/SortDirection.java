@@ -12,7 +12,7 @@ public enum SortDirection {
 
     private final Function<String, Sort.Order> orderCreator;
 
-    SortDirection(Function<String, Sort.Order> orderCreator) {
+    SortDirection(final Function<String, Sort.Order> orderCreator) {
         this.orderCreator = orderCreator;
     }
 
