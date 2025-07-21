@@ -7,7 +7,6 @@ import com.ulises.posverse.rest.api.CategoriesApi;
 import com.ulises.posverse.rest.api.dto.category.create.requests.CategoryCreationRequestDTO;
 import com.ulises.posverse.rest.api.dto.category.create.responses.CategoryCreationResponseDTO;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +23,7 @@ public class CategoriesApiImpl implements CategoriesApi {
         final Category categoryToSave = this.categoryMapper.toModel(categoryCreationRequestDTO);
         final Category savedCategory = this.categoriesService.saveCategory(categoryToSave);
         final CategoryCreationResponseDTO response = this.categoryMapper.toDto(savedCategory);
-        val uri = URI.create("/categories/" + savedCategory.getId());
+        final URI uri = URI.create("/categories/" + savedCategory.getId());
 
         return ResponseEntity
                 .created(uri)

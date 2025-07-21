@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.lang.reflect.Field;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, List<String>>> handleValidationException(final MethodArgumentNotValidException ex) {
-        val errors = ex.getBindingResult()
+        final List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(fieldError -> {
@@ -71,7 +71,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Map<String, List<String>>> handleConstraintViolationException(final ConstraintViolationException ex) {
-        val errors = ex.getConstraintViolations()
+        final List<String> errors = ex.getConstraintViolations()
                 .stream()
                 .map(ConstraintViolation::getMessage)
                 .toList();
@@ -93,13 +93,13 @@ public class GlobalExceptionHandler {
             SQLIntegrityConstraintViolationException ex,
             HttpServletRequest request) {
 
-        val detail = ex.getMessage();
-        val duplicatedValue = extractDuplicatedValue(detail);
-        val constraint = extractConstraintName(detail);
-        val table = extractTableName(detail);
-        var field = "unknown";
+        final String detail = ex.getMessage();
+        final String duplicatedValue = extractDuplicatedValue(detail);
+        final String constraint = extractConstraintName(detail);
+        final String tableName = extractTableName(detail);
+        String field = "unknown";
 
-        if (constraint != null && table != null) {
+        if (constraint != null && tableName != null) {
             try {
                 field = jdbcTemplate.queryForObject(
                         """
@@ -111,13 +111,13 @@ public class GlobalExceptionHandler {
                                 LIMIT 1
                                 """,
                         String.class,
-                        table, constraint
+                        tableName, constraint
                 );
             } catch (Exception ignored) {
             }
         }
 
-        val error = new HashMap<String, Object>();
+        final HashMap<String, Object> error = new HashMap<String, Object>();
         error.put("error", List.of(String.format("Value '%s' already exists", duplicatedValue)));
         error.put("duplicatedField", field);
         error.put("duplicatedValue", duplicatedValue);
@@ -135,8 +135,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(PropertyReferenceException.class)
     public ResponseEntity<Map<String, String>> handlePropertyReferenceException(final PropertyReferenceException ex) {
-        val invalidProperty = ex.getPropertyName();
-        val message = String.format("No property '%s' found", invalidProperty);
+        final String invalidProperty = ex.getPropertyName();
+        final String message = String.format("No property '%s' found", invalidProperty);
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -150,12 +150,12 @@ public class GlobalExceptionHandler {
      * @return the duplicated value as a String, or null if not found
      */
     private String extractDuplicatedValue(String message) {
-        val start = message.indexOf("Duplicate entry '");
+        final int start = message.indexOf("Duplicate entry '");
         if (start == -1) {
             return null;
         }
-        val firstQuote = message.indexOf("'", start);
-        val secondQuote = message.indexOf("'", firstQuote + 1);
+        final int firstQuote = message.indexOf("'", start);
+        final int secondQuote = message.indexOf("'", firstQuote + 1);
         return (firstQuote != -1 && secondQuote != -1)
                 ? message.substring(firstQuote + 1, secondQuote)
                 : null;
@@ -168,11 +168,14 @@ public class GlobalExceptionHandler {
      * @return the constraint name as a String, or null if not found
      */
     private String extractConstraintName(String message) {
-        val keyIndex = message.indexOf("for key");
+        final int keyIndex = message.indexOf("for key");
         if (keyIndex == -1) {
             return null;
         }
-        val key = message.substring(keyIndex).replace("for key", "").replaceAll("[`']", "").trim();
+        final String key = message.substring(keyIndex)
+                .replace("for key", "")
+                .replaceAll("[`']", "")
+                .trim();
         return key.contains(".") ? key.substring(key.indexOf('.') + 1) : key;
     }
 
@@ -183,11 +186,14 @@ public class GlobalExceptionHandler {
      * @return the table name as a String, or null if not found
      */
     private String extractTableName(String message) {
-        val keyIndex = message.indexOf("for key");
+        final int keyIndex = message.indexOf("for key");
         if (keyIndex == -1) {
             return null;
         }
-        val key = message.substring(keyIndex).replace("for key", "").replaceAll("[`']", "").trim();
+        final String key = message.substring(keyIndex)
+                .replace("for key", "")
+                .replaceAll("[`']", "")
+                .trim();
         return key.contains(".") ? key.substring(0, key.indexOf('.')) : null;
     }
 
@@ -201,12 +207,12 @@ public class GlobalExceptionHandler {
      */
     private Class<?> resolveEnumType(final FieldError fieldError, final MethodArgumentNotValidException ex) {
         try {
-            val targetObject = ex.getBindingResult().getTarget();
+            final Object targetObject = ex.getBindingResult().getTarget();
             if (targetObject == null) {
                 return null;
             }
 
-            val field = targetObject.getClass().getDeclaredField(fieldError.getField());
+            final Field field = targetObject.getClass().getDeclaredField(fieldError.getField());
             return field.getType();
         } catch (Exception e) {
             return null;

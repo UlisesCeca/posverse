@@ -14,7 +14,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -55,7 +54,7 @@ public class ProductsServiceImpl implements ProductsService {
     @Override
     public Page<Product> getPagedProductsList(final PagedProductsRetrievalRequestParam requestParams) {
         final Sort sort = requestParams.getDirection().apply(requestParams.getSortBy());
-        val pageable = PageRequest.of(requestParams.getPage() - 1, requestParams.getSize(), sort);
+        final PageRequest pageable = PageRequest.of(requestParams.getPage() - 1, requestParams.getSize(), sort);
 
         return this.productsRepository.findAll(pageable).map(productMapper::toModel);
     }

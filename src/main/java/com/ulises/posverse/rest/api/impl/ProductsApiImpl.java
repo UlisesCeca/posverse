@@ -10,7 +10,6 @@ import com.ulises.posverse.rest.api.dto.product.create.responses.ProductCreation
 import com.ulises.posverse.rest.api.dto.product.create.responses.ProductRetrievalResponseDTO;
 import com.ulises.posverse.rest.api.dto.product.params.PagedProductsRetrievalRequestParam;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +27,7 @@ public class ProductsApiImpl implements ProductsApi {
         final Product productToSave = this.productMapper.toModel(productCreationRequestDTO);
         final Product savedProduct = this.productsService.saveProduct(productToSave);
         final ProductCreationResponseDTO response = this.productMapper.toCategoryProductCreationDto(savedProduct);
-        val uri = URI.create("/products/" + savedProduct.getId());
+        final URI uri = URI.create("/products/" + savedProduct.getId());
 
         return ResponseEntity
                 .created(uri)
