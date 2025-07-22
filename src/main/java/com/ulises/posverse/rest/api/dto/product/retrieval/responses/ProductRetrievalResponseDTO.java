@@ -44,6 +44,11 @@ public class ProductRetrievalResponseDTO implements Serializable {
     @JsonProperty("purchasePrice")
     private BigDecimal purchasePrice;
 
+    @Schema(name = "saleProfit", example = "0.70", description = "The profit obtained from selling a product",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("saleProfit")
+    private BigDecimal saleProfit;
+
     @Schema(name = "description", example = "Refreshing drink", description = "The description of the product",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("description")
