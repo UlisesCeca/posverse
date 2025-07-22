@@ -19,4 +19,5 @@ public class Product  {
     private Category category;
     private Boolean deleted;
     private LocalDateTime deletedDate;
+    private BigDecimal saleProfit;
 }

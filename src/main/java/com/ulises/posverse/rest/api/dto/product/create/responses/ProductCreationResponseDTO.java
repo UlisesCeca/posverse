@@ -71,4 +71,9 @@ public class ProductCreationResponseDTO implements Serializable {
           description = "Category associated to the product")
   @JsonProperty("category")
   private CategoryProductCreationResponseDTO category;
+
+  @Schema(name = "saleProfit", example = "2.50", description = "The profit obtained from selling a product",
+          requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("saleProfit")
+  private BigDecimal saleProfit;
 }

@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Service
@@ -35,7 +36,7 @@ public class ProductsServiceImpl implements ProductsService {
         final ProductEntity productToSave;
         final ProductEntity savedProductEntity;
 
-        this.adjustProductStockTracking(product);
+        this.adjustProductFieldsBeforeStoring(product);
         this.assertProductFieldsExist(product);
         productToSave = this.productMapper.toEntity(product);
         this.productsRepository.save(productToSave);
@@ -55,7 +56,7 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
-    public Page<Product> getPagedProductsList(final PagedProductsRetrievalRequestFilter requestParams) {
+    public Page<Product> getPagedProductsList(@NonNull final PagedProductsRetrievalRequestFilter requestParams) {
         final Sort sort = requestParams.getDirection().apply(requestParams.getSortBy());
         final PageRequest pageable = PageRequest.of(requestParams.getPage() - 1, requestParams.getSize(), sort);
 
@@ -88,10 +89,27 @@ public class ProductsServiceImpl implements ProductsService {
         }
     }
 
-    private void adjustProductStockTracking(final Product product) {
+    private void adjustProductFieldsBeforeStoring(@NonNull final Product product) {
+        this.adjustProductStockTracking(product);
+        product.setSaleProfit(this.calculateSaleProfit(product));
+    }
+
+    private void adjustProductStockTracking(@NonNull final Product product) {
         if (!product.getStockTracking().getMustTrackStock()) {
             product.getStockTracking().setStockAmount(null);
             product.getStockTracking().setLowStockWarning(null);
         }
+    }
+
+    private BigDecimal calculateSaleProfit(@NonNull final Product product) {
+        final BigDecimal saleProfit;
+
+        if (product.getSalePrice() == null || product.getPurchasePrice() == null) {
+            saleProfit = null;
+        } else {
+            saleProfit = product.getSalePrice().subtract(product.getPurchasePrice());
+        }
+
+        return saleProfit;
     }
 }

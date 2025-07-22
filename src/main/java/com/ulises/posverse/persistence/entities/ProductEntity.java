@@ -48,6 +48,9 @@ public class ProductEntity {
     @Column(name = "DELETED_DATE")
     private LocalDateTime deletedDate;
 
+    @Column(name = "SALE_PROFIT")
+    private BigDecimal saleProfit;
+
     @Embedded
     private StockTrackingEntity stockTracking;
 
