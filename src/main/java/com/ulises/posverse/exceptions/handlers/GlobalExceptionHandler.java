@@ -1,5 +1,6 @@
 package com.ulises.posverse.exceptions.handlers;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -59,6 +61,42 @@ public class GlobalExceptionHandler {
                 .toList();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", errors));
+    }
+    
+    /**
+     * Handles deserialization errors that occur when the JSON request body cannot be
+     * properly converted into the expected data types, particularly when an invalid
+     * value is provided for an enum field.
+     *
+     * <p>This method specifically detects cases where a string value does not match any of
+     * the allowed enum constants and returns a clear, user-friendly error message indicating
+     * the invalid input and the list of accepted values.
+     *
+     * @param ex the exception thrown by Jackson when it fails to deserialize the request body
+     * @return a 400 Bad Request response with a descriptive error message
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, List<String>>> handleDeserializationException(final HttpMessageNotReadableException ex) {
+        final Throwable cause = ex.getCause();
+
+        if (cause instanceof InvalidFormatException ife && ife.getTargetType().isEnum()) {
+            final String field = ife.getPath().getFirst().getFieldName();
+            final String invalidValue = ife.getValue().toString();
+            final String allowed = Arrays.stream(ife.getTargetType().getEnumConstants())
+                    .map(Object::toString)
+                    .collect(Collectors.joining(", "));
+
+            final String message = String.format(
+                    "Invalid value '%s' for '%s'. Allowed values: %s",
+                    invalidValue, field, allowed
+            );
+
+            return ResponseEntity.badRequest().body(Map.of("error", List.of(message)));
+        }
+
+        return ResponseEntity
+                .badRequest()
+                .body(Map.of("error", List.of("Malformed JSON input")));
     }
 
     /**

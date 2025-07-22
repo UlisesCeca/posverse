@@ -1,6 +1,7 @@
 package com.ulises.posverse.rest.api.dto.product.create.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ulises.posverse.common.enums.SellingUnit;
 import com.ulises.posverse.rest.api.dto.product.StockTrackingDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
@@ -44,16 +45,18 @@ public class ProductCreationRequestDTO implements Serializable {
     @JsonProperty("description")
     private String description;
 
+    @NotNull(message = "isCompositeProduct can't be null")
     @Schema(name = "isCompositeProduct", example = "true",
             description = "If the product is composed by one or more different products",
             requiredMode = Schema.RequiredMode.REQUIRED)
     @JsonProperty("isCompositeProduct")
     private Boolean isCompositeProduct;
 
+    @NotNull(message = "isAvailableForSale can't be null")
     @Schema(name = "isAvailableForSale", example = "true", description = "If the product is available for sale or not",
             requiredMode = Schema.RequiredMode.REQUIRED)
     @JsonProperty("isAvailableForSale")
-    private Boolean isAvailableForSale;
+    private Boolean isAvailableForSale = true;
 
     @Valid
     @NotNull(message = "stockTracking can't be null")
@@ -66,5 +69,16 @@ public class ProductCreationRequestDTO implements Serializable {
             description = "Category associated to the product")
     @JsonProperty("category")
     private CategoryProductCreationRequestDTO category;
+
+    @Schema(name = "barCode", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            description = "Bar code of the product")
+    @JsonProperty("barCode")
+    private String barCode;
+
+    @NotNull(message = "sellingUnit can't be null")
+    @Schema(name = "sellingUnit", requiredMode = Schema.RequiredMode.REQUIRED,
+            description = "Selling unit (UNIT or WEIGHT)", example = "UNIT")
+    @JsonProperty("sellingUnit")
+    private SellingUnit sellingUnit = SellingUnit.UNIT;
 }
 

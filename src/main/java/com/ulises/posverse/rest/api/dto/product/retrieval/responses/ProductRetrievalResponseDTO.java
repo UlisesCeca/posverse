@@ -3,6 +3,7 @@ package com.ulises.posverse.rest.api.dto.product.retrieval.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ulises.posverse.common.enums.SellingUnit;
 import com.ulises.posverse.rest.api.dto.product.StockTrackingDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
@@ -77,4 +78,9 @@ public class ProductRetrievalResponseDTO implements Serializable {
             description = "Category associated to the product")
     @JsonProperty("category")
     private CategoryProductRetrievalResponseDTO category;
+
+    @Schema(name = "sellingUnit", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            description = "Selling unit (UNIT or WEIGHT)", example = "UNIT")
+    @JsonProperty("sellingUnit")
+    private SellingUnit sellingUnit;
 }

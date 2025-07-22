@@ -2,6 +2,7 @@ package com.ulises.posverse.rest.api.dto.product.update.requests;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ulises.posverse.common.enums.SellingUnit;
 import com.ulises.posverse.rest.api.dto.product.StockTrackingDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
@@ -67,4 +68,15 @@ public class ProductUpdateRequestDTO implements Serializable {
             description = "Category associated to the product")
     @JsonProperty("category")
     private CategoryProductUpdateRequestDTO category;
+
+    @Schema(name = "barCode", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            description = "Bar code of the product", example = "981261983")
+    @JsonProperty("barCode")
+    private String barCode;
+
+    @NotNull(message = "sellingUnit can't be null")
+    @Schema(name = "sellingUnit", requiredMode = Schema.RequiredMode.REQUIRED,
+            description = "Selling unit (UNIT or WEIGHT)", example = "UNIT")
+    @JsonProperty("sellingUnit")
+    private SellingUnit sellingUnit = SellingUnit.UNIT;
 }

@@ -1,5 +1,6 @@
 package com.ulises.posverse.domain.model;
 
+import com.ulises.posverse.common.enums.SellingUnit;
 import lombok.Data;
 
 import java.io.Serial;
@@ -25,4 +26,6 @@ public class Product implements Serializable {
     private Boolean deleted;
     private LocalDateTime deletedDate;
     private BigDecimal saleProfit;
+    private String barCode;
+    private SellingUnit sellingUnit;
 }

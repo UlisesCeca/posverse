@@ -1,8 +1,11 @@
 package com.ulises.posverse.persistence.entities;
 
+import com.ulises.posverse.common.enums.SellingUnit;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -50,6 +53,13 @@ public class ProductEntity {
 
     @Column(name = "SALE_PROFIT")
     private BigDecimal saleProfit;
+
+    @Column(name = "BAR_CODE")
+    private BigDecimal barCode;
+
+    @Column(name = "SELLING_UNIT")
+    @Enumerated(EnumType.STRING)
+    private SellingUnit sellingUnit;
 
     @Embedded
     private StockTrackingEntity stockTracking;
