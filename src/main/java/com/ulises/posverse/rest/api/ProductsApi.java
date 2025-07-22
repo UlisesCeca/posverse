@@ -6,10 +6,11 @@
 package com.ulises.posverse.rest.api;
 
 import com.ulises.posverse.rest.api.dto.product.create.requests.ProductCreationRequestDTO;
+import com.ulises.posverse.rest.api.dto.product.retrieval.filters.PagedProductsRetrievalFilters;
 import com.ulises.posverse.rest.api.dto.product.retrieval.responses.PagedProductsRetrievalResponseDTO;
 import com.ulises.posverse.rest.api.dto.product.create.responses.ProductCreationResponseDTO;
 import com.ulises.posverse.rest.api.dto.product.retrieval.responses.ProductRetrievalResponseDTO;
-import com.ulises.posverse.rest.api.dto.product.retrieval.filters.PagedProductsRetrievalRequestFilter;
+import com.ulises.posverse.rest.api.dto.product.retrieval.filters.PagedProductsRetrievalPagingParam;
 import com.ulises.posverse.rest.api.dto.product.update.requests.ProductUpdateRequestDTO;
 import com.ulises.posverse.rest.api.dto.product.update.responses.ProductUpdateResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -93,7 +94,7 @@ public interface ProductsApi {
     /**
      * GET /products : Retrieves a product by id
      *
-     * @param requestParams request params
+     * @param pagingParams request params
      * @return OK (status code 200)
      */
     @Operation(
@@ -113,8 +114,9 @@ public interface ProductsApi {
     )
 
     ResponseEntity<PagedProductsRetrievalResponseDTO> getPagedProductsList(
-            @Parameter(name = "requestParams", description = "The parameters to perform the paged request")
-            @ModelAttribute final PagedProductsRetrievalRequestFilter requestParams
+            @Parameter(name = "pagingParams", description = "The parameters to perform the paged request")
+            @ModelAttribute final PagedProductsRetrievalPagingParam pagingParams,
+            @ModelAttribute final PagedProductsRetrievalFilters filters
     );
 
     /**

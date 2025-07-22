@@ -1,7 +1,8 @@
 package com.ulises.posverse.domain.services;
 
 import com.ulises.posverse.domain.model.Product;
-import com.ulises.posverse.rest.api.dto.product.retrieval.filters.PagedProductsRetrievalRequestFilter;
+import com.ulises.posverse.rest.api.dto.product.retrieval.filters.PagedProductsRetrievalFilters;
+import com.ulises.posverse.rest.api.dto.product.retrieval.filters.PagedProductsRetrievalPagingParam;
 import org.springframework.data.domain.Page;
 
 public interface ProductsService {
@@ -9,7 +10,8 @@ public interface ProductsService {
 
     Product findProductById(final Long productId);
 
-    Page<Product> getPagedProductsList(final PagedProductsRetrievalRequestFilter requestParams);
+    Page<Product> getPagedProductsList(final PagedProductsRetrievalPagingParam requestParams,
+                                       final PagedProductsRetrievalFilters filters);
 
     void deleteProductById(final Long productId);
 

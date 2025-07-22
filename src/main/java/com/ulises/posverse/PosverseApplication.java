@@ -10,7 +10,8 @@ import org.springframework.cache.annotation.EnableCaching;
 		"com.ulises.posverse.exceptions.handlers",
 		"com.ulises.posverse.domain.services.impl",
 		"com.ulises.posverse.common.mappers",
-		"com.ulises.posverse.config"
+		"com.ulises.posverse.config",
+		"com.ulises.posverse.common.redis.keygenerators"
 })
 @EnableCaching
 public class PosverseApplication {

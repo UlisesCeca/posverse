@@ -9,19 +9,19 @@ import java.util.List;
 
 @Data
 @ParameterObject
-public class PagedProductsRetrievalRequestFilter {
+public class PagedProductsRetrievalPagingParam {
     public static final List<String> VALID_DIRECTIONS = List.of("asc", "desc");
 
     @Parameter(description = "Page number (default is 1)", example = "1")
-    private int page = 1;
+    public int page = 1;
 
     @Parameter(description = "Amount of products per page (default is 10)", example = "10")
-    private int size = 20;
+    public int size = 20;
 
     @Parameter(description = "Field used to sort (default is name)", example = "name")
-    private String sortBy = "name";
+    public String sortBy = "name";
 
     @Parameter(description = "Sorting direction: asc or desc (default is asc)", example = "asc")
-    private SortDirection direction = SortDirection.ASC;
+    public SortDirection direction = SortDirection.ASC;
 
 }

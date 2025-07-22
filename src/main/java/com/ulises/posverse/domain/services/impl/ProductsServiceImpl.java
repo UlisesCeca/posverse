@@ -11,18 +11,21 @@ import com.ulises.posverse.persistence.entities.ProductEntity;
 import com.ulises.posverse.persistence.entities.ProductHistoryEntity;
 import com.ulises.posverse.persistence.repositories.ProductsHistoryRepository;
 import com.ulises.posverse.persistence.repositories.ProductsRepository;
-import com.ulises.posverse.rest.api.dto.product.retrieval.filters.PagedProductsRetrievalRequestFilter;
+import com.ulises.posverse.persistence.specifications.DynamicSpecificationBuilder;
+import com.ulises.posverse.rest.api.dto.product.retrieval.filters.PagedProductsRetrievalFilters;
+import com.ulises.posverse.rest.api.dto.product.retrieval.filters.PagedProductsRetrievalPagingParam;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -37,10 +40,10 @@ public class ProductsServiceImpl implements ProductsService {
     private final ProductMapper productMapper;
     private final CategoriesService categoriesService;
     private final ProductsHistoryRepository productsHistoryRepository;
-    private final CacheManager cacheManager;
 
     @Override
     @CachePut(value = "products", key = "#result.id")
+    @CacheEvict(value = "productsPageCache", allEntries = true)
     public Product saveProduct(@NonNull final Product product) {
         final ProductEntity productToSave;
         final ProductEntity savedProductEntity;
@@ -51,9 +54,8 @@ public class ProductsServiceImpl implements ProductsService {
         this.productsRepository.save(productToSave);
         this.entityManager.clear();
         savedProductEntity = this.productsRepository.findById(productToSave.getId()).orElse(null);
-        final Product savedProductModel = this.productMapper.toModel(savedProductEntity);
 
-        return savedProductModel;
+        return this.productMapper.toModel(savedProductEntity);
     }
 
     @Override
@@ -62,23 +64,27 @@ public class ProductsServiceImpl implements ProductsService {
         final ProductEntity productEntity = this.productsRepository
                 .findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
-        final Product savedProductModel = this.productMapper.toModel(productEntity);
 
-        return savedProductModel;
+        return this.productMapper.toModel(productEntity);
     }
 
     @Override
-    @Cacheable(value = "productsPageCache", key = "#requestParams.page + '-' + #requestParams.size + '-' + " +
-            "#requestParams.sortBy + '-' + #requestParams.direction")
-    public Page<Product> getPagedProductsList(@NonNull final PagedProductsRetrievalRequestFilter requestParams) {
-        final Sort sort = requestParams.getDirection().apply(requestParams.getSortBy());
-        final PageRequest pageable = PageRequest.of(requestParams.getPage() - 1, requestParams.getSize(), sort);
+    @Cacheable(value = "productsPageCache", keyGenerator = "pagedProductsKeyGenerator")
+    public Page<Product> getPagedProductsList(@NonNull final PagedProductsRetrievalPagingParam pagingParams,
+                                              @NonNull final PagedProductsRetrievalFilters filters) {
+        final Sort sort = pagingParams.getDirection().apply(pagingParams.getSortBy());
+        final PageRequest pageable = PageRequest.of(pagingParams.getPage() - 1, pagingParams.getSize(), sort);
+        final DynamicSpecificationBuilder<ProductEntity> builder = new DynamicSpecificationBuilder<>();
+        final Specification<ProductEntity> spec = builder.buildFromFilter(filters);
 
-        return this.productsRepository.findAll(pageable).map(productMapper::toModel);
+        return this.productsRepository.findAll(spec, pageable).map(productMapper::toModel);
     }
 
     @Override
-    @CacheEvict(value = "products", key = "#productId")
+    @Caching(evict = {
+            @CacheEvict(value = "products", key = "#productId"),
+            @CacheEvict(value = "productsPageCache", allEntries = true)
+    })
     public void deleteProductById(@NonNull final Long productId) {
         final Product savedProduct = this.findProductById(productId);
 
@@ -92,6 +98,7 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Override
     @CachePut(value = "products", key = "#product.id")
+    @CacheEvict(value = "productsPageCache", allEntries = true)
     public Product updateProduct(@NonNull final Product product) {
         this.findProductById(product.getId());
         return this.saveProduct(product);
@@ -111,6 +118,7 @@ public class ProductsServiceImpl implements ProductsService {
     private void adjustProductFieldsBeforeStoring(@NonNull final Product product) {
         this.adjustProductStockTracking(product);
         product.setSaleProfit(this.calculateSaleProfit(product));
+        product.setDeleted(false);
     }
 
     private void adjustProductStockTracking(@NonNull final Product product) {

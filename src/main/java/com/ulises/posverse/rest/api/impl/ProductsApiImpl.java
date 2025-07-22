@@ -5,10 +5,11 @@ import com.ulises.posverse.domain.model.Product;
 import com.ulises.posverse.domain.services.ProductsService;
 import com.ulises.posverse.rest.api.ProductsApi;
 import com.ulises.posverse.rest.api.dto.product.create.requests.ProductCreationRequestDTO;
+import com.ulises.posverse.rest.api.dto.product.retrieval.filters.PagedProductsRetrievalFilters;
 import com.ulises.posverse.rest.api.dto.product.retrieval.responses.PagedProductsRetrievalResponseDTO;
 import com.ulises.posverse.rest.api.dto.product.create.responses.ProductCreationResponseDTO;
 import com.ulises.posverse.rest.api.dto.product.retrieval.responses.ProductRetrievalResponseDTO;
-import com.ulises.posverse.rest.api.dto.product.retrieval.filters.PagedProductsRetrievalRequestFilter;
+import com.ulises.posverse.rest.api.dto.product.retrieval.filters.PagedProductsRetrievalPagingParam;
 import com.ulises.posverse.rest.api.dto.product.update.requests.ProductUpdateRequestDTO;
 import com.ulises.posverse.rest.api.dto.product.update.responses.ProductUpdateResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -45,9 +46,11 @@ public class ProductsApiImpl implements ProductsApi {
     }
 
     @Override
-    public ResponseEntity<PagedProductsRetrievalResponseDTO> getPagedProductsList(final PagedProductsRetrievalRequestFilter requestParams
+    public ResponseEntity<PagedProductsRetrievalResponseDTO> getPagedProductsList(
+            final PagedProductsRetrievalPagingParam requestParams,
+            final PagedProductsRetrievalFilters filters
     ) {
-        final Page<Product> pagedProducts = this.productsService.getPagedProductsList(requestParams);
+        final Page<Product> pagedProducts = this.productsService.getPagedProductsList(requestParams, filters);
         final PagedProductsRetrievalResponseDTO response = this.productMapper.toPagedProductsDto(pagedProducts);
 
         return ResponseEntity.ok(response);
