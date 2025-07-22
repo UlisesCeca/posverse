@@ -1,0 +1,62 @@
+package com.ulises.posverse.persistence.entities;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.Data;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "PRODUCTS_HISTORY")
+@Data
+public class ProductHistoryEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "OLD_ID")
+    private Long oldId;
+
+    @Column(name = "NAME")
+    private String name;
+
+    @Column(name = "SALE_PRICE")
+    private BigDecimal salePrice;
+
+    @Column(name = "PURCHASE_PRICE")
+    private BigDecimal purchasePrice;
+
+    @Column(name = "DESCRIPTION")
+    private String description;
+
+    @Column(name = "IS_COMPOSITE_PRODUCT")
+    private Boolean isCompositeProduct;
+
+    @Column(name = "IS_AVAILABLE_FOR_SALE")
+    private Boolean isAvailableForSale;
+
+    @Column(name = "DELETED")
+    private Boolean deleted;
+
+    @Column(name = "DELETED_DATE")
+    private LocalDateTime deletedDate;
+
+    @Column(name = "SALE_PROFIT")
+    private BigDecimal saleProfit;
+
+    @Embedded
+    private StockTrackingEntity stockTracking;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_CATEGORY")
+    private CategoryEntity category;
+}

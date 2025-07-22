@@ -8,6 +8,8 @@ import com.ulises.posverse.domain.services.ProductsService;
 import com.ulises.posverse.exceptions.CategoryNotFoundException;
 import com.ulises.posverse.exceptions.ProductNotFoundException;
 import com.ulises.posverse.persistence.entities.ProductEntity;
+import com.ulises.posverse.persistence.entities.ProductHistoryEntity;
+import com.ulises.posverse.persistence.repositories.ProductsHistoryRepository;
 import com.ulises.posverse.persistence.repositories.ProductsRepository;
 import com.ulises.posverse.rest.api.dto.product.retrieval.filters.PagedProductsRetrievalRequestFilter;
 import jakarta.persistence.EntityManager;
@@ -30,6 +32,7 @@ public class ProductsServiceImpl implements ProductsService {
     private final ProductsRepository productsRepository;
     private final ProductMapper productMapper;
     private final CategoriesService categoriesService;
+    private final ProductsHistoryRepository productsHistoryRepository;
 
     @Override
     public Product saveProduct(@NonNull final Product product) {
@@ -69,7 +72,10 @@ public class ProductsServiceImpl implements ProductsService {
 
         savedProduct.setDeleted(true);
         savedProduct.setDeletedDate(LocalDateTime.now());
-        this.productsRepository.save(this.productMapper.toEntity(savedProduct));
+
+        final ProductEntity deletedProduct = this.productMapper.toEntity(savedProduct);
+        this.saveProductHistory(deletedProduct);
+        this.productsRepository.save(deletedProduct);
     }
 
     @Override
@@ -111,5 +117,11 @@ public class ProductsServiceImpl implements ProductsService {
         }
 
         return saleProfit;
+    }
+
+    private void saveProductHistory(@NonNull final ProductEntity productEntity) {
+        final ProductHistoryEntity productHistory = this.productMapper.toProductHistory(productEntity);
+
+        this.productsHistoryRepository.save(productHistory);
     }
 }
