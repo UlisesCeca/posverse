@@ -112,7 +112,31 @@ public interface ProductsApi {
 
     ResponseEntity<PagedProductsRetrievalResponseDTO> getPagedProductsList(
             @Parameter(name = "requestParams", description = "The parameters to perform the paged request")
-                @ModelAttribute final PagedProductsRetrievalRequestParam requestParams
+            @ModelAttribute final PagedProductsRetrievalRequestParam requestParams
+    );
+
+    /**
+     * DELETE /products{id} : Deletes a product by id
+     *
+     * @param productId productId
+     * @return OK (status code 204)
+     */
+    @Operation(
+            operationId = "deleteProductById",
+            summary = "Deletes a product by id",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "NO_CONTENT", content = {
+                            @Content(mediaType = "application/json")
+                    })
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.DELETE,
+            value = "/products/{productId}"
+    )
+    ResponseEntity<Void> deleteProductById(
+            @Parameter(name = "productId", description = "Deletes a product by id",
+                    required = true) @PathVariable final Long productId
     );
 
 }

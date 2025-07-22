@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "PRODUCTS")
@@ -40,6 +41,12 @@ public class ProductEntity {
 
     @Column(name = "IS_AVAILABLE_FOR_SALE")
     private Boolean isAvailableForSale;
+
+    @Column(name = "DELETED")
+    private Boolean deleted;
+
+    @Column(name = "DELETED_DATE")
+    private LocalDateTime deletedDate;
 
     @Embedded
     private StockTrackingEntity stockTracking;

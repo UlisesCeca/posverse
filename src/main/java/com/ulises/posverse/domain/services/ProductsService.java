@@ -7,7 +7,9 @@ import org.springframework.data.domain.Page;
 public interface ProductsService {
     Product saveProduct(final Product product);
 
-    Product findProductById(final Long id);
+    Product findProductById(final Long productId);
 
     Page<Product> getPagedProductsList(final PagedProductsRetrievalRequestParam requestParams);
+
+    void deleteProductById(final Long productId);
 }

@@ -1,6 +1,6 @@
 package com.ulises.posverse.rest.api.impl;
 
-import com.ulises.posverse.common.mappers.CategoryMapper;
+import com.ulises.posverse.common.mappers.category.CategoryMapper;
 import com.ulises.posverse.domain.model.Category;
 import com.ulises.posverse.domain.services.CategoriesService;
 import com.ulises.posverse.rest.api.CategoriesApi;

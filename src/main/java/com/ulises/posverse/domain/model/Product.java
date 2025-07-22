@@ -4,6 +4,7 @@ import com.ulises.posverse.rest.api.dto.product.StockTrackingDTO;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 public class Product  {
@@ -16,4 +17,6 @@ public class Product  {
     private Boolean isAvailableForSale;
     private StockTrackingDTO stockTracking;
     private Category category;
+    private Boolean deleted;
+    private LocalDateTime deletedDate;
 }

@@ -1,6 +1,6 @@
 package com.ulises.posverse.domain.services.impl;
 
-import com.ulises.posverse.common.mappers.ProductMapper;
+import com.ulises.posverse.common.mappers.product.ProductMapper;
 import com.ulises.posverse.domain.model.Category;
 import com.ulises.posverse.domain.model.Product;
 import com.ulises.posverse.domain.services.CategoriesService;
@@ -18,6 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -43,10 +45,10 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
-    public Product findProductById(@NonNull final Long id) {
+    public Product findProductById(@NonNull final Long productId) {
         final ProductEntity productEntity = this.productsRepository
-                .findById(id)
-                .orElseThrow(() -> new ProductNotFoundException(id));
+                .findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
 
         return this.productMapper.toModel(productEntity);
     }
@@ -57,6 +59,15 @@ public class ProductsServiceImpl implements ProductsService {
         final PageRequest pageable = PageRequest.of(requestParams.getPage() - 1, requestParams.getSize(), sort);
 
         return this.productsRepository.findAll(pageable).map(productMapper::toModel);
+    }
+
+    @Override
+    public void deleteProductById(@NonNull final Long productId) {
+        final Product savedProduct = this.findProductById(productId);
+
+        savedProduct.setDeleted(true);
+        savedProduct.setDeletedDate(LocalDateTime.now());
+        this.productsRepository.save(this.productMapper.toEntity(savedProduct));
     }
 
     private void assertProductFieldsExist(@NonNull final Product product) {

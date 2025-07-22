@@ -1,4 +1,4 @@
-package com.ulises.posverse.common.mappers;
+package com.ulises.posverse.common.mappers.category;
 
 import com.ulises.posverse.domain.model.Category;
 import com.ulises.posverse.persistence.entities.CategoryEntity;

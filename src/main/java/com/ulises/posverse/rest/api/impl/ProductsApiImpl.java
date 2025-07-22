@@ -1,6 +1,6 @@
 package com.ulises.posverse.rest.api.impl;
 
-import com.ulises.posverse.common.mappers.ProductMapper;
+import com.ulises.posverse.common.mappers.product.ProductMapper;
 import com.ulises.posverse.domain.model.Product;
 import com.ulises.posverse.domain.services.ProductsService;
 import com.ulises.posverse.rest.api.ProductsApi;
@@ -49,5 +49,12 @@ public class ProductsApiImpl implements ProductsApi {
         final PagedProductsRetrievalResponseDTO response = this.productMapper.toPagedProductsDto(pagedProducts);
 
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteProductById(final Long productId) {
+        this.productsService.deleteProductById(productId);
+
+        return ResponseEntity.noContent().build();
     }
 }
