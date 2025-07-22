@@ -1,4 +1,4 @@
-package com.ulises.posverse.rest.api.dto.product.create.responses;
+package com.ulises.posverse.rest.api.dto.product.update.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,12 +9,11 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 
-
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen",
-        date = "2025-07-18T14:39:42.224865400+02:00[Europe/Madrid]", comments = "Generator version: 7.4.0")
+        date = "2025-07-22T14:39:42.224865400+02:00[Europe/Madrid]", comments = "Generator version: 7.4.0")
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CategoryProductRetrievalResponseDTO implements Serializable {
+public class CategoryProductUpdateResponseDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package com.ulises.posverse.rest.api.dto.product.params;
+package com.ulises.posverse.rest.api.dto.product.retrieval.filters;
 
 import com.ulises.posverse.common.enums.SortDirection;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @ParameterObject
-public class PagedProductsRetrievalRequestParam {
+public class PagedProductsRetrievalRequestFilter {
     public static final List<String> VALID_DIRECTIONS = List.of("asc", "desc");
 
     @Parameter(description = "Page number (default is 1)", example = "1")

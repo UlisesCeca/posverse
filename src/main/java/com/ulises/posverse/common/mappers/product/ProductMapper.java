@@ -5,9 +5,11 @@ import com.ulises.posverse.domain.model.Product;
 import com.ulises.posverse.persistence.entities.ProductEntity;
 import com.ulises.posverse.rest.api.dto.product.create.requests.ProductCreationRequestDTO;
 import com.ulises.posverse.rest.api.dto.product.create.responses.CategoryProductCreationResponseDTO;
-import com.ulises.posverse.rest.api.dto.product.create.responses.PagedProductsRetrievalResponseDTO;
+import com.ulises.posverse.rest.api.dto.product.retrieval.responses.PagedProductsRetrievalResponseDTO;
 import com.ulises.posverse.rest.api.dto.product.create.responses.ProductCreationResponseDTO;
-import com.ulises.posverse.rest.api.dto.product.create.responses.ProductRetrievalResponseDTO;
+import com.ulises.posverse.rest.api.dto.product.retrieval.responses.ProductRetrievalResponseDTO;
+import com.ulises.posverse.rest.api.dto.product.update.requests.ProductUpdateRequestDTO;
+import com.ulises.posverse.rest.api.dto.product.update.responses.ProductUpdateResponseDTO;
 import org.mapstruct.BeforeMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -30,19 +32,8 @@ public interface ProductMapper {
     @Mapping(target = "productsList", source = "content")
     PagedProductsRetrievalResponseDTO toPagedProductsDto(final Page<Product> pagedProducts);
 
-    @BeforeMapping
-    default void setStockValues(final ProductCreationRequestDTO dto) {
-        if (!dto.getStockTracking().getMustTrackStock()) {
-            dto.getStockTracking().setStockAmount(null);
-            dto.getStockTracking().setLowStockWarning(null);
-        }
-    }
+    Product toModel(final ProductUpdateRequestDTO dto);
 
-    @BeforeMapping
-    default void setStockValues(final Product model) {
-        if (!model.getStockTracking().getMustTrackStock()) {
-            model.getStockTracking().setStockAmount(null);
-            model.getStockTracking().setLowStockWarning(null);
-        }
-    }
+    ProductUpdateResponseDTO toUpdateResponseDto(final Product model);
+
 }

@@ -6,10 +6,12 @@
 package com.ulises.posverse.rest.api;
 
 import com.ulises.posverse.rest.api.dto.product.create.requests.ProductCreationRequestDTO;
-import com.ulises.posverse.rest.api.dto.product.create.responses.PagedProductsRetrievalResponseDTO;
+import com.ulises.posverse.rest.api.dto.product.retrieval.responses.PagedProductsRetrievalResponseDTO;
 import com.ulises.posverse.rest.api.dto.product.create.responses.ProductCreationResponseDTO;
-import com.ulises.posverse.rest.api.dto.product.create.responses.ProductRetrievalResponseDTO;
-import com.ulises.posverse.rest.api.dto.product.params.PagedProductsRetrievalRequestParam;
+import com.ulises.posverse.rest.api.dto.product.retrieval.responses.ProductRetrievalResponseDTO;
+import com.ulises.posverse.rest.api.dto.product.retrieval.filters.PagedProductsRetrievalRequestFilter;
+import com.ulises.posverse.rest.api.dto.product.update.requests.ProductUpdateRequestDTO;
+import com.ulises.posverse.rest.api.dto.product.update.responses.ProductUpdateResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -112,7 +114,7 @@ public interface ProductsApi {
 
     ResponseEntity<PagedProductsRetrievalResponseDTO> getPagedProductsList(
             @Parameter(name = "requestParams", description = "The parameters to perform the paged request")
-            @ModelAttribute final PagedProductsRetrievalRequestParam requestParams
+            @ModelAttribute final PagedProductsRetrievalRequestFilter requestParams
     );
 
     /**
@@ -135,7 +137,37 @@ public interface ProductsApi {
             value = "/products/{productId}"
     )
     ResponseEntity<Void> deleteProductById(
-            @Parameter(name = "productId", description = "Deletes a product by id",
+            @Parameter(name = "productId", description = "Product id",
+                    required = true) @PathVariable final Long productId
+    );
+
+    /**
+     * PUT /products : Creates a product
+     *
+     * @param productUpdateRequestDTO Product update request (required)
+     * @return OK (status code 2001)
+     */
+    @Operation(
+            operationId = "updateProduct",
+            summary = "Updates a product",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK", content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ProductUpdateResponseDTO.class))
+                    })
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.PUT,
+            value = "/products/{productId}",
+            produces = { "application/json" },
+            consumes = { "application/json" }
+    )
+
+    ResponseEntity<ProductUpdateResponseDTO> updateProduct(
+            @Parameter(name = "ProductCreationRequestDTO", description = "Product update request",
+                    required = true) @Valid @RequestBody final ProductUpdateRequestDTO productUpdateRequestDTO,
+            @Parameter(name = "productId", description = "Product ID",
                     required = true) @PathVariable final Long productId
     );
 

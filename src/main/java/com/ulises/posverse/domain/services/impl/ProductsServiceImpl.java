@@ -9,7 +9,7 @@ import com.ulises.posverse.exceptions.CategoryNotFoundException;
 import com.ulises.posverse.exceptions.ProductNotFoundException;
 import com.ulises.posverse.persistence.entities.ProductEntity;
 import com.ulises.posverse.persistence.repositories.ProductsRepository;
-import com.ulises.posverse.rest.api.dto.product.params.PagedProductsRetrievalRequestParam;
+import com.ulises.posverse.rest.api.dto.product.retrieval.filters.PagedProductsRetrievalRequestFilter;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.NonNull;
@@ -35,6 +35,7 @@ public class ProductsServiceImpl implements ProductsService {
         final ProductEntity productToSave;
         final ProductEntity savedProductEntity;
 
+        this.adjustProductStockTracking(product);
         this.assertProductFieldsExist(product);
         productToSave = this.productMapper.toEntity(product);
         this.productsRepository.save(productToSave);
@@ -54,7 +55,7 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
-    public Page<Product> getPagedProductsList(final PagedProductsRetrievalRequestParam requestParams) {
+    public Page<Product> getPagedProductsList(final PagedProductsRetrievalRequestFilter requestParams) {
         final Sort sort = requestParams.getDirection().apply(requestParams.getSortBy());
         final PageRequest pageable = PageRequest.of(requestParams.getPage() - 1, requestParams.getSize(), sort);
 
@@ -70,6 +71,12 @@ public class ProductsServiceImpl implements ProductsService {
         this.productsRepository.save(this.productMapper.toEntity(savedProduct));
     }
 
+    @Override
+    public Product updateProduct(@NonNull final Product product) {
+        this.findProductById(product.getId());
+        return this.saveProduct(product);
+    }
+
     private void assertProductFieldsExist(@NonNull final Product product) {
         this.assertProductCategoryExists(product.getCategory());
     }
@@ -78,6 +85,13 @@ public class ProductsServiceImpl implements ProductsService {
         if (category != null) {
             this.categoriesService.findById(category.getId())
                     .orElseThrow(() -> new CategoryNotFoundException(category.getId()));
+        }
+    }
+
+    private void adjustProductStockTracking(final Product product) {
+        if (!product.getStockTracking().getMustTrackStock()) {
+            product.getStockTracking().setStockAmount(null);
+            product.getStockTracking().setLowStockWarning(null);
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.ulises.posverse.rest.api.dto.product.create.responses;
+package com.ulises.posverse.rest.api.dto.product.retrieval.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
