@@ -16,6 +16,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -33,8 +37,10 @@ public class ProductsServiceImpl implements ProductsService {
     private final ProductMapper productMapper;
     private final CategoriesService categoriesService;
     private final ProductsHistoryRepository productsHistoryRepository;
+    private final CacheManager cacheManager;
 
     @Override
+    @CachePut(value = "products", key = "#result.id")
     public Product saveProduct(@NonNull final Product product) {
         final ProductEntity productToSave;
         final ProductEntity savedProductEntity;
@@ -45,20 +51,25 @@ public class ProductsServiceImpl implements ProductsService {
         this.productsRepository.save(productToSave);
         this.entityManager.clear();
         savedProductEntity = this.productsRepository.findById(productToSave.getId()).orElse(null);
+        final Product savedProductModel = this.productMapper.toModel(savedProductEntity);
 
-        return this.productMapper.toModel(savedProductEntity);
+        return savedProductModel;
     }
 
     @Override
+    @Cacheable(value = "products", key = "#productId")
     public Product findProductById(@NonNull final Long productId) {
         final ProductEntity productEntity = this.productsRepository
                 .findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
+        final Product savedProductModel = this.productMapper.toModel(productEntity);
 
-        return this.productMapper.toModel(productEntity);
+        return savedProductModel;
     }
 
     @Override
+    @Cacheable(value = "productsPageCache", key = "#requestParams.page + '-' + #requestParams.size + '-' + " +
+            "#requestParams.sortBy + '-' + #requestParams.direction")
     public Page<Product> getPagedProductsList(@NonNull final PagedProductsRetrievalRequestFilter requestParams) {
         final Sort sort = requestParams.getDirection().apply(requestParams.getSortBy());
         final PageRequest pageable = PageRequest.of(requestParams.getPage() - 1, requestParams.getSize(), sort);
@@ -67,6 +78,7 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
+    @CacheEvict(value = "products", key = "#productId")
     public void deleteProductById(@NonNull final Long productId) {
         final Product savedProduct = this.findProductById(productId);
 
@@ -79,6 +91,7 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
+    @CachePut(value = "products", key = "#product.id")
     public Product updateProduct(@NonNull final Product product) {
         this.findProductById(product.getId());
         return this.saveProduct(product);

@@ -13,7 +13,7 @@ public class PagedProductsRetrievalRequestFilter {
     public static final List<String> VALID_DIRECTIONS = List.of("asc", "desc");
 
     @Parameter(description = "Page number (default is 1)", example = "1")
-    private int page = 0;
+    private int page = 1;
 
     @Parameter(description = "Amount of products per page (default is 10)", example = "10")
     private int size = 20;

@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StockTrackingDTO {
+
     @NotNull(message = "mustTrackStock can't be null")
     @Schema(name = "mustTrackStock", description = "If the product should track the inventory such as the stock",
             requiredMode = Schema.RequiredMode.REQUIRED)

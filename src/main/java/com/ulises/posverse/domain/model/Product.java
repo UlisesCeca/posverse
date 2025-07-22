@@ -1,13 +1,18 @@
 package com.ulises.posverse.domain.model;
 
-import com.ulises.posverse.rest.api.dto.product.StockTrackingDTO;
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-public class Product  {
+public class Product implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private Long id;
     private String name;
     private BigDecimal salePrice;
@@ -15,7 +20,7 @@ public class Product  {
     private String description;
     private Boolean isCompositeProduct;
     private Boolean isAvailableForSale;
-    private StockTrackingDTO stockTracking;
+    private StockTracking stockTracking;
     private Category category;
     private Boolean deleted;
     private LocalDateTime deletedDate;
